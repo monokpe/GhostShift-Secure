@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GhostShift Secure</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand">
+          <span class="brand-mark">GS</span>
+          <div>
+            <strong>GhostShift Secure</strong>
+            <span>Enterprise Early-Warning Intelligence</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="upload">Upload</button>
+          <button class="nav-item" data-view="intelligence">Executive Intel</button>
+          <button class="nav-item" data-view="governance">Governance</button>
+          <button class="nav-item" data-view="timeline">Timeline</button>
+          <button class="nav-item" data-view="architecture">Architecture</button>
+          <button class="nav-item" onclick="window.open('slides.html', '_blank')" style="border-top: 1px solid var(--surface-border); margin-top: 0.5rem; color: var(--primary);">Pitch Slides ↗</button>
+        </nav>
+        <div class="scenario">
+          <span class="label">Scenario</span>
+          <strong>NovaTech Systems</strong>
+          <p>Infrastructure migration with emerging operational drift.</p>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <span class="label">Live Demo</span>
+            <h1>Operational Risk Command</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="api-status" id="api-status">
+              <span class="status-indicator disconnected"></span>
+              <span class="status-text">Static Fallback</span>
+            </div>
+            <button class="secondary-action" id="start-pitch">Start Pitch Mode</button>
+            <button class="primary-action" id="run-analysis">Run Secure Analysis</button>
+          </div>
+        </header>
+
+        <section class="pitch-strip" id="pitch-strip" aria-live="polite">
+          <div>
+            <span class="label" id="pitch-kicker">Scene 1 of 5</span>
+            <strong id="pitch-title">Calm Overview</strong>
+            <p id="pitch-copy">NovaTech looks stable at the executive layer, but early signals are scattered across operational systems.</p>
+          </div>
+          <button class="secondary-action" id="next-scene">Next Scene</button>
+        </section>
+
+        <section class="view active" id="dashboard">
+          <div class="hero-grid">
+            <section class="risk-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="label">Organizational Risk</span>
+                  <h2 id="risk-score">42</h2>
+                </div>
+                <span class="status-pill moderate" id="risk-posture">Moderate</span>
+              </div>
+              <div class="score-ring" aria-hidden="true">
+                <div id="score-fill"></div>
+              </div>
+              <p id="risk-summary">Fragmented early signals detected across migration readiness, support, and release coordination.</p>
+            </section>
+
+            <section class="signal-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="label">Critical Signals</span>
+                  <h2>Risk Surface</h2>
+                </div>
+              </div>
+              <div class="signal-list" id="signal-list"></div>
+            </section>
+          </div>
+
+          <section class="metrics-grid" aria-label="Risk metrics">
+            <article class="metric">
+              <span>Delivery Risk</span>
+              <strong id="delivery-risk">54%</strong>
+              <div class="bar"><i style="width:54%"></i></div>
+            </article>
+            <article class="metric">
+              <span>Customer Escalation</span>
+              <strong id="customer-risk">31%</strong>
+              <div class="bar"><i style="width:31%"></i></div>
+            </article>
+            <article class="metric">
+              <span>Coordination Drift</span>
+              <strong id="coordination-risk">47%</strong>
+              <div class="bar"><i style="width:47%"></i></div>
+            </article>
+            <article class="metric">
+              <span>Security Exposure</span>
+              <strong id="security-risk">18%</strong>
+              <div class="bar"><i style="width:18%"></i></div>
+            </article>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Operational Timeline</span>
+                <h2>Causal Sequence</h2>
+              </div>
+            </div>
+            <div class="timeline compact" id="dashboard-timeline"></div>
+          </section>
+        </section>
+
+        <section class="view" id="upload">
+          <section class="panel split">
+            <div>
+              <span class="label">Secure Ingestion</span>
+              <h2>NovaTech Operational Export</h2>
+              <p class="muted">Slack logs, Jira tickets, support cases, incident reports, timeline events, and governance records are staged for secure analysis.</p>
+            </div>
+            <button class="primary-action" id="upload-analysis">Analyze Dataset</button>
+          </section>
+          <section class="file-grid" id="file-grid"></section>
+          <section class="pipeline" id="pipeline"></section>
+        </section>
+
+        <section class="view" id="intelligence">
+          <section class="panel executive">
+            <div class="brief-header">
+              <div>
+                <span class="label">Gemini Executive Brief</span>
+                <h2 id="brief-headline">Infrastructure migration triggered coordination drift, customer escalation, and security exposure.</h2>
+              </div>
+              <div class="brief-score">
+                <span>Confidence</span>
+                <strong id="brief-confidence">91%</strong>
+              </div>
+            </div>
+            <p id="brief-summary">NovaTech's infrastructure migration appears to have created a coordination breakdown between platform engineering, application teams, release management, and customer operations. The breakdown increased deployment instability, reopened critical defects, delayed the release train, and elevated enterprise customer escalation volume.</p>
+          </section>
+          <section class="executive-grid">
+            <article class="brief-card wide">
+              <span class="label">Root Cause</span>
+              <p id="brief-root-cause">The migration shifted ownership boundaries faster than NovaTech's operating model could absorb.</p>
+            </article>
+            <article class="brief-card">
+              <span class="label">Primary Decision</span>
+              <p id="brief-primary-decision">Treat the migration as an active business-risk incident, not only an engineering defect.</p>
+            </article>
+            <article class="brief-card">
+              <span class="label">72-Hour Action</span>
+              <p id="brief-next-action">Centralize incident command, freeze non-critical deployments, rotate the exposed credential, and send proactive remediation timelines.</p>
+            </article>
+          </section>
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">What Changed Over Time</span>
+                <h2>Operational Drift Pattern</h2>
+              </div>
+            </div>
+            <div class="change-list" id="change-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Risk Sections</span>
+                <h2>Evidence-Linked Executive Findings</h2>
+              </div>
+            </div>
+            <div class="brief-risk-list" id="brief-risk-list"></div>
+          </section>
+          <section class="recommendations" id="recommendations"></section>
+        </section>
+
+        <section class="view" id="governance">
+          <section class="governance-reveal">
+            <article class="boundary-card">
+              <span class="label">Original Payload</span>
+              <code id="original-payload">Incident note: temporary key GSK_live_91f4b8ab73a2f23de0c871e921 was pasted during hotfix.</code>
+            </article>
+            <article class="boundary-card blocked">
+              <span class="label">Sanitized Model Context</span>
+              <code id="sanitized-payload">Incident note: temporary key [REDACTED_API_KEY] was pasted during hotfix.</code>
+            </article>
+          </section>
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Veea Lobster Trap Layer</span>
+                <h2>Outbound AI Governance</h2>
+              </div>
+              <span class="status-pill critical">3 events</span>
+            </div>
+            <div class="audit-log" id="audit-log"></div>
+          </section>
+        </section>
+
+        <section class="view" id="timeline">
+          <section class="panel">
+            <span class="label">Timeline Intelligence</span>
+            <h2>Migration Failure Pattern</h2>
+            <div class="timeline" id="full-timeline"></div>
+          </section>
+        </section>
+
+        <section class="view" id="architecture">
+          <section class="panel">
+            <span class="label">System Architecture</span>
+            <h2>Secure Intelligence Path</h2>
+            <div class="architecture-flow">
+              <article>
+                <strong>Enterprise Data</strong>
+                <span>Slack, Jira, support, incidents, PDFs</span>
+              </article>
+              <article>
+                <strong>Lobster Trap Filter</strong>
+                <span>Secrets, PII, prompt injection, audit log</span>
+              </article>
+              <article>
+                <strong>DSPy Recursive Analysis</strong>
+                <span>Chunking, local summaries, risk modules</span>
+              </article>
+              <article>
+                <strong>Gemini Briefing</strong>
+                <span>Root cause, impact, remediation</span>
+              </article>
+              <article>
+                <strong>Executive Dashboard</strong>
+                <span>Risk score, timeline, governance evidence</span>
+              </article>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <aside class="evidence-drawer" id="evidence-drawer" aria-label="Risk evidence" aria-hidden="true">
+        <div class="drawer-header">
+          <div>
+            <span class="label">Evidence Drilldown</span>
+            <h2 id="evidence-title">Risk Evidence</h2>
+          </div>
+          <button class="icon-button" id="close-evidence" aria-label="Close evidence panel">X</button>
+        </div>
+        <div class="drawer-body">
+          <div class="evidence-meta">
+            <article>
+              <span>Confidence</span>
+              <strong id="evidence-confidence">--</strong>
+            </article>
+            <article>
+              <span>Severity</span>
+              <strong id="evidence-severity">--</strong>
+            </article>
+          </div>
+          <section class="evidence-section">
+            <span class="label">Why GhostShift Thinks This</span>
+            <p id="evidence-why"></p>
+          </section>
+          <section class="evidence-section">
+            <span class="label">Timeline Correlation</span>
+            <p id="evidence-correlation"></p>
+          </section>
+          <section class="evidence-section">
+            <span class="label">Recommended Action</span>
+            <p id="evidence-action"></p>
+          </section>
+          <section class="evidence-section">
+            <span class="label">Source Trail</span>
+            <div class="source-list" id="evidence-sources"></div>
+          </section>
+        </div>
+      </aside>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

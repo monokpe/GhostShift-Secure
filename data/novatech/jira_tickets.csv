@@ -1,0 +1,13 @@
+ticket_id,type,priority,status,created_at,updated_at,owner,summary,risk_signal
+NOVA-2144,Task,Medium,Done,2026-04-25,2026-04-29,Platform,"Finalize migration observability dashboard","baseline"
+NOVA-2178,Bug,High,Done,2026-04-28,2026-04-30,Backend,"Auth service timeout during staged migration","pre_migration_instability"
+NOVA-2201,Story,High,Blocked,2026-04-30,2026-05-03,Release,"Document rollback ownership for migration flags","ownership_gap"
+NOVA-2219,Bug,Critical,Reopened,2026-05-01,2026-05-02,Backend,"Payment retry service returns intermittent 502 after cutover","deployment_instability"
+NOVA-2224,Incident,Critical,In Progress,2026-05-01,2026-05-01,SRE,"Failed rollback after global migration flag promotion","rollback_failure"
+NOVA-2240,Bug,High,Reopened,2026-05-02,2026-05-04,Backend,"Onboarding workflow stalls during account provisioning","customer_impact"
+NOVA-2258,Task,High,Blocked,2026-05-02,2026-05-04,QA,"Certify hotfix release for migrated services","blocked_dependency"
+NOVA-2266,Bug,Medium,Open,2026-05-02,2026-05-04,Frontend,"Admin console shows stale provisioning status","customer_confusion"
+NOVA-2281,Bug,Critical,Reopened,2026-05-02,2026-05-04,Backend,"Retry patch conflicts with migration flag under load","repeat_reopen"
+NOVA-2297,Task,High,Open,2026-05-03,2026-05-04,Security,"Rotate exposed payment retry service credential","security_exposure"
+NOVA-2305,Incident,High,Open,2026-05-03,2026-05-04,Support,"Enterprise onboarding SLA breach for three customers","customer_escalation"
+NOVA-2312,Story,Medium,Blocked,2026-05-04,2026-05-04,Release,"Resume May release train after migration stabilization","delivery_delay"

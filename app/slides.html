@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostShift Secure — Pitch Deck Slides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #131b2e;
+      --surface-border: #222f4d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #10b981;
+      --accent-red: #ef4444;
+      --accent-amber: #f59e0b;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Presentation Viewport */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .slide-viewport {
+      width: 100%;
+      max-width: 1100px;
+      height: 100%;
+      max-height: 650px;
+      background: linear-gradient(135deg, var(--surface) 0%, #0d1323 100%);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(100px) rotateY(-10deg);
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) rotateY(0deg);
+      pointer-events: auto;
+    }
+
+    .slide.previous {
+      opacity: 0;
+      transform: translateX(-100px) rotateY(10deg);
+    }
+
+    /* Typography & Content Layout */
+    .slide-header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-kicker {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--primary);
+    }
+
+    .slide-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(120deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 0.25rem;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    /* Slide specific styles */
+    .title-slide {
+      align-items: center;
+      text-align: center;
+    }
+
+    .title-slide .slide-title {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(120deg, #ffffff 30%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-slide .tagline {
+      font-size: 1.5rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .title-slide .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 800px;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card ul {
+      list-style-type: none;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .card li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .card li::before {
+      content: "•";
+      color: var(--primary);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Bullet lists */
+    .bullet-list {
+      list-style: none;
+    }
+
+    .bullet-list li {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .bullet-list li::before {
+      content: "→";
+      color: var(--primary);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+
+    /* Highlights & Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge.red { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .badge.green { background: rgba(16, 185, 129, 0.15); color: var(--accent); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .badge.amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.2); }
+
+    .highlight-box {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem;
+      border-radius: 0 12px 12px 0;
+      margin-top: 1rem;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    th {
+      font-weight: 600;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* Architecture Flow styling */
+    .arch-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      border: 1px solid var(--surface-border);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    .arch-step {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      width: 80%;
+      text-align: center;
+      color: var(--text);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .arch-step.highlight {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.15);
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .arch-arrow {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    /* Controls Bar */
+    .deck-controls {
+      background: #090d16;
+      border-top: 1px solid var(--surface-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      z-index: 10;
+    }
+
+    .controls-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .slide-select {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      flex: 1;
+      max-width: 400px;
+      height: 6px;
+      background: var(--surface);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0 2rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 999px;
+      transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .controls-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .action-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--text-muted);
+    }
+
+    .action-btn.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Presenter Notes Panel */
+    .notes-drawer {
+      height: 0px;
+      background: #080c14;
+      border-top: 0px solid var(--surface-border);
+      overflow-y: auto;
+      transition: height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-width 0.3s;
+      padding: 0 2rem;
+    }
+
+    .notes-drawer.open {
+      height: 160px;
+      border-top: 1px solid var(--surface-border);
+      padding: 1.25rem 2rem;
+    }
+
+    .notes-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .notes-content {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+
+    /* Floating navigation hints */
+    .keyboard-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+    }
+
+    .dashboard-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .dashboard-link:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Presentation Viewport -->
+  <main class="deck-container">
+    <div class="slide-viewport">
+
+      <!-- Slide 1: Title & Positioning -->
+      <section class="slide active title-slide" data-notes="Start strong! Welcome judges and operational leads. Position GhostShift Secure as an intelligence platform rather than a generic monitoring tool. The goal is to highlight the bridge between operational noise and boardroom-level decisions.">
+        <header class="slide-header">
+          <span class="slide-kicker">GhostShift Secure</span>
+        </header>
+        <div class="slide-body">
+          <h1 class="slide-title">GhostShift Secure</h1>
+          <p class="tagline">Enterprise Early-Warning Intelligence for Fragmented Operational Data</p>
+          <p class="subtitle">Transform Hidden Coordination Drift into Actionable Executive Clarity—With Governance Built In</p>
+        </div>
+      </section>
+
+      <!-- Slide 2: The Problem -->
+      <section class="slide" data-notes="Introduce the fictional story of NovaTech Systems. They did an infrastructure migration that *looked* successful from the top layer but was experiencing structural coordination drift underneath. Point to the risk metric jump (42 -> 86) which went unnoticed.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">The Problem</span>
+            <h2 class="slide-title">Enterprise Data is Fragmented. But the Crisis is Real.</h2>
+          </div>
+          <span class="badge red">NovaTech Scenario</span>
+        </header>
+        <div class="slide-body grid-2">
+          <div>
+            <p style="font-weight: 500; margin-bottom: 0.75rem; color: #ffffff;">What Leadership Sees (Green Dashboard):</p>
+            <ul class="bullet-list" style="margin-bottom: 1.5rem;">
+              <li style="font-size: 1.05rem; margin-bottom: 0.5rem;">Migration completed on schedule</li>
+              <li style="font-size: 1.05rem; margin-bottom: 0.5rem;">Core systems online and active</li>
+            </ul>
+            <p style="font-weight: 500; margin-bottom: 0.75rem; color: #ffffff;">What Actually Happened Underneath:</p>
+            <ul class="bullet-list">
+              <li style="font-size: 1.05rem; margin-bottom: 0.5rem;">Deployment failures spiked 340%</li>
+              <li style="font-size: 1.05rem; margin-bottom: 0.5rem;">Jira bugs reopened; SLA breached</li>
+              <li style="font-size: 1.05rem; margin-bottom: 0.5rem;">API credential accidentally leaked to Slack</li>
+            </ul>
+          </div>
+          <div class="card" style="text-align: center; border-color: rgba(239, 68, 68, 0.3);">
+            <div style="font-size: 0.85rem; color: var(--accent-red); text-transform: uppercase; font-weight: 600;">Systemic Risk Escalation</div>
+            <div style="font-size: 5.5rem; font-weight: 800; color: #ffffff; line-height: 1.1; margin: 0.5rem 0;">42 <span style="font-size: 2.5rem; color: var(--text-muted);">→</span> 86</div>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">The score jumped to critical, but no single standard alarm went off because the signals were fragmented.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Why Current Solutions Fail -->
+      <section class="slide" data-notes="Explain the blind spots in traditional systems: APM tools only monitor single services; sending raw logs to third-party LLMs introduces severe governance and leakage risks; and typical SIEM is built for hackers, not team coordination drift.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">Market Analysis</span>
+            <h2 class="slide-title">Existing Approaches Have a Blind Spot</h2>
+          </div>
+        </header>
+        <div class="slide-body grid-3">
+          <div class="card">
+            <h4>Traditional APM/Dashboards</h4>
+            <ul>
+              <li>Tracks isolated metrics only</li>
+              <li>No cross-system correlation</li>
+              <li>Requires manual human analysis and alert chasing</li>
+            </ul>
+          </div>
+          <div class="card" style="border-color: rgba(245, 158, 11, 0.2);">
+            <h4>Raw LLM Analysis</h4>
+            <ul>
+              <li>Sends sensitive data to external AI</li>
+              <li>PII & credential leakage risk</li>
+              <li>Unsubstantiated black-box findings with no evidence links</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Security SIEM / incident response</h4>
+            <ul>
+              <li>Built for security threat events</li>
+              <li>Fails to parse team coordination</li>
+              <li>Too slow for proactive operational warning</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Enter GhostShift Secure -->
+      <section class="slide" data-notes="Walk through our solution's three pillars: 1. Correlating multi-source logs. 2. Redacting sensitive data before outbound APIs with Lobster Trap. 3. Providing evidence-linked executive briefings.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">The Solution</span>
+            <h2 class="slide-title">GhostShift Secure: Three Core Capabilities</h2>
+          </div>
+        </header>
+        <div class="slide-body grid-3">
+          <div class="card">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧩</div>
+            <h4>1. Correlate Signals</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Normalizes and parses Slack, Jira, support tickets, incident reports, and timelines automatically to locate coordination breakdowns.</p>
+          </div>
+          <div class="card" style="border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.05);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+            <h4>2. Enforce AI Boundaries</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">The local <strong>Lobster Trap Filter</strong> intercepts and redacts API keys, credentials, PII, and emails <em>before</em> sending context to models.</p>
+          </div>
+          <div class="card">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+            <h4>3. Executive Intelligence</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Delivers boardroom-ready briefs with a confidence index, root causes, 72-hour recommendations, and clickable evidence audit links.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: The Architecture -->
+      <section class="slide" data-notes="Detail the pipeline. Highlight that security is *first*, not an afterthought. Data sources go to parser, then get actively scrubbed by the Lobster Trap, then go to DSPy Modules for structure, and finally Gemini generates the brief.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">System Design</span>
+            <h2 class="slide-title">GhostShift Secure Processing Pipeline</h2>
+          </div>
+        </header>
+        <div class="slide-body grid-2">
+          <div class="arch-flow">
+            <div class="arch-step">Enterprise Data Sources (Slack, Jira, Support)</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-step highlight">Lobster Trap Security Filter (Redacts Secrets)</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-step">DSPy Intelligence Modules (Structured Chunking)</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-step">Gemini Executive Briefing Generation</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-step">Interactive Executive Dashboard</div>
+          </div>
+          <div>
+            <p style="margin-bottom: 1rem; font-weight: 600; color: #ffffff;">Key Engineering Highlights:</p>
+            <ul class="bullet-list" style="font-size: 1rem;">
+              <li style="font-size: 1rem; margin-bottom: 0.75rem;"><strong>Security-First Proxy:</strong> Secrets are redacted before outbound requests.</li>
+              <li style="font-size: 1rem; margin-bottom: 0.75rem;"><strong>Structured Modules:</strong> DSPy ensures repeatable, programmatically defined reasoning rather than wild chat formatting.</li>
+              <li style="font-size: 1rem; margin-bottom: 0.75rem;"><strong>Evidence grounded:</strong> Claims in the brief link directly back to log line numbers.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: The Demo Flow -->
+      <section class="slide" data-notes="Explain the demo story we are going to present. It matches our emotional arc: calm dashboard, secure ingestion, risk score escalation, governance audit, and executive clarity.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">Live Presentation Flow</span>
+            <h2 class="slide-title">The Demo: NovaTech's Story</h2>
+          </div>
+        </header>
+        <div class="slide-body">
+          <div style="display: flex; justify-content: space-between; gap: 1rem;">
+            <div class="card" style="flex: 1; padding: 1rem; font-size: 0.85rem;">
+              <strong style="color: var(--primary);">Scene 1: Calm</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">Risk score starts at 42. Leadership feels stable.</p>
+            </div>
+            <div class="card" style="flex: 1; padding: 1rem; font-size: 0.85rem;">
+              <strong style="color: var(--primary);">Scene 2: Ingest</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">Stage and upload NovaTech log files.</p>
+            </div>
+            <div class="card" style="flex: 1; padding: 1rem; font-size: 0.85rem; border-color: var(--primary);">
+              <strong style="color: var(--primary);">Scene 3: Escalate</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">Risk transitions 42 -> 86. Drift revealed.</p>
+            </div>
+            <div class="card" style="flex: 1; padding: 1rem; font-size: 0.85rem;">
+              <strong style="color: var(--primary);">Scene 4: Intercept</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">Review blocked API keys in Governance tab.</p>
+            </div>
+            <div class="card" style="flex: 1; padding: 1rem; font-size: 0.85rem;">
+              <strong style="color: var(--primary);">Scene 5: Intelligence</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">Click evidence audit links & read briefing.</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 1.5rem; font-size: 1rem;">
+            <strong>Presenter Tip:</strong> Walk through this narrative flow slowly. Emphasize that the risk escalation happens immediately and visibly, capturing the judges' attention.
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7: What Makes GhostShift Unique -->
+      <section class="slide" data-notes="Present the competitive landscape. Focus heavily on security boundaries and tracebility (confidence indices grounded in evidence) which competitors lack.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">Competitive Matrix</span>
+            <h2 class="slide-title">What Makes GhostShift Unique</h2>
+          </div>
+        </header>
+        <div class="slide-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Aspect</th>
+                <th>Standard Competitors</th>
+                <th style="color: var(--primary); font-weight: bold;">GhostShift Secure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Operational Correlation</strong></td>
+                <td>Single metric alerts or manual trace</td>
+                <td>Auto multi-source cross-system logic</td>
+              </tr>
+              <tr>
+                <td><strong>AI Privacy / Governance</strong></td>
+                <td>Direct, raw data outbound to LLMs</td>
+                <td><span style="color: var(--accent); font-weight: bold;">Lobster Trap</span> intercept-first security</td>
+              </tr>
+              <tr>
+                <td><strong>Auditability</strong></td>
+                <td>Black-box score (ChatGPT style)</td>
+                <td>Confidence score linked directly to raw evidence logs</td>
+              </tr>
+              <tr>
+                <td><strong>Executive Alignment</strong></td>
+                <td>Excessive jargon or chat logs</td>
+                <td>Boardroom-ready briefs and 72-hour actions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Slide 8: The Business Impact -->
+      <section class="slide" data-notes="Connect the technical elements back to business value: preventing churn, decreasing MTTR (mean time to recovery), protecting the brand from leaked secrets, and providing executive decision-readiness.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">Business Value</span>
+            <h2 class="slide-title">The Business Impact</h2>
+          </div>
+        </header>
+        <div class="slide-body grid-2">
+          <div>
+            <ul class="bullet-list">
+              <li style="margin-bottom: 0.75rem; font-size: 1.05rem;"><strong>Prevent Revenue Loss:</strong> Instantly catches onboarding friction before SLA breach triggers refund requests.</li>
+              <li style="margin-bottom: 0.75rem; font-size: 1.05rem;"><strong>Accelerate Recovery:</strong> Reduces MTTR by routing explicit tasks (e.g. appointing incident commander).</li>
+              <li style="margin-bottom: 0.75rem; font-size: 1.05rem;"><strong>Mitigate Exposure:</strong> Intercepts API key exposures before they can be recorded in cloud model histories.</li>
+            </ul>
+          </div>
+          <div class="card" style="background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+            <h4 style="color: var(--accent);">Enterprise Trust Guarantee</h4>
+            <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); margin-top: 0.5rem;">
+              By separating the <strong>Governance Proxy</strong> from the <strong>Reasoning Engine</strong>, enterprises can deploy GhostShift Secure in air-gapped networks. It guarantees compliance with financial, defense, and healthcare privacy guidelines out-of-the-box.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9: Tech Stack & Feasibility -->
+      <section class="slide" data-notes="Show that this is a highly realistic architecture. The frontend is fast and lightweight, the backend can run locally, and the DSPy modules keep LLM calls structured. Emphasize offline resilience as a product feature.">
+        <header class="slide-header">
+          <div>
+            <span class="slide-kicker">Engineering</span>
+            <h2 class="slide-title">Tech Stack & Feasibility</h2>
+          </div>
+        </header>
+        <div class="slide-body grid-2">
+          <div class="card">
+            <h4 style="margin-bottom: 0.5rem;">Stack Profile</h4>
+            <ul style="font-size: 0.9rem;">
+              <li><strong>UI:</strong> Pure HTML5 / Modern CSS / Vanilla JS (No node package overhead, lightning-fast rendering)</li>
+              <li><strong>Backend:</strong> Lightweight Python (FastAPI scaffold & dependency-free server fallback)</li>
+              <li><strong>Model Flow:</strong> DSPy Module signatures + Gemini API connectivity</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-bottom: 0.5rem;">Offline Resilience</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              The system features a seamless offline mode. If external APIs or the network drops during operations, it continues running on-premises using precomputed caches or local models, ensuring mission-critical continuity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Close & Ask -->
+      <section class="slide title-slide" data-notes="Summarize the core pitch: GhostShift turns operational chaos into clarity. Make your ask—judges' support and corporate feedback. Thank everyone and invite questions!">
+        <header class="slide-header">
+          <span class="slide-kicker">GhostShift Secure</span>
+        </header>
+        <div class="slide-body">
+          <h2 class="slide-title" style="font-size: 3rem; margin-bottom: 1rem;">Visible Clarity from Hidden Drift</h2>
+          <p class="tagline" style="font-size: 1.3rem; margin-bottom: 1.5rem; color: #ffffff;">We bridge the gap between fragmented signals and executive action.</p>
+          <div style="display: inline-block; margin-top: 1rem;">
+            <a href="index.html" class="dashboard-link" style="font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+              <span>← Back to Dashboard</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <span class="keyboard-hint">Use Left/Right Arrows or Space to navigate</span>
+    </div>
+  </main>
+
+  <!-- Presenter Notes Panel -->
+  <aside id="notes-drawer" class="notes-drawer">
+    <div class="notes-header">Presenter Notes</div>
+    <div id="notes-content" class="notes-content">Notes content will display here...</div>
+  </aside>
+
+  <!-- Controls Bar -->
+  <footer class="deck-controls">
+    <div class="controls-left">
+      <button class="nav-btn" id="prev-btn" aria-label="Previous Slide">←</button>
+      <button class="nav-btn" id="next-btn" aria-label="Next Slide">→</button>
+      <select class="slide-select" id="slide-select" aria-label="Select Slide">
+        <!-- Will be filled by JavaScript -->
+      </select>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="controls-right">
+      <button class="action-btn" id="notes-toggle">
+        <span>📝</span> Presenter Notes
+      </button>
+      <button class="action-btn" id="fullscreen-toggle">
+        <span>🖥️</span> Fullscreen
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const slideSelect = document.getElementById('slide-select');
+    const progressBar = document.getElementById('progress-bar');
+    const notesToggle = document.getElementById('notes-toggle');
+    const notesDrawer = document.getElementById('notes-drawer');
+    const notesContent = document.getElementById('notes-content');
+    const fullscreenToggle = document.getElementById('fullscreen-toggle');
+
+    let currentSlide = 0;
+
+    // Initialize select options
+    slides.forEach((slide, index) => {
+      const kicker = slide.querySelector('.slide-kicker')?.textContent || `Slide ${index + 1}`;
+      const title = slide.querySelector('.slide-title')?.textContent || kicker;
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${index + 1}. ${title.substring(0, 30)}${title.length > 30 ? '...' : ''}`;
+      slideSelect.appendChild(option);
+    });
+
+    function updateDeck() {
+      slides.forEach((slide, index) => {
+        slide.classList.remove('active', 'previous');
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        } else if (index < currentSlide) {
+          slide.classList.add('previous');
+        }
+      });
+
+      // Update Controls
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+      slideSelect.value = currentSlide;
+
+      // Update Progress
+      const progressPercent = (currentSlide / (slides.length - 1)) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update Presenter Notes
+      const notes = slides[currentSlide].getAttribute('data-notes');
+      notesContent.textContent = notes || "No presenter notes for this slide.";
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateDeck();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateDeck();
+      }
+    }
+
+    // Event Listeners
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    slideSelect.addEventListener('change', (e) => {
+      currentSlide = parseInt(e.target.value);
+      updateDeck();
+    });
+
+    notesToggle.addEventListener('click', () => {
+      notesDrawer.classList.toggle('open');
+      notesToggle.classList.toggle('active');
+    });
+
+    fullscreenToggle.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Error enabling fullscreen: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // Initialize
+    updateDeck();
+  </script>
+</body>
+</html>

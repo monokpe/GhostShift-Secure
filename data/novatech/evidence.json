@@ -1,0 +1,110 @@
+[
+  {
+    "id": "coordination-breakdown",
+    "risk_name": "Coordination breakdown",
+    "confidence": 0.94,
+    "severity": "critical",
+    "sources": ["slack_logs.jsonl", "jira_tickets.csv", "incident_reports.md"],
+    "timeline_correlation": "Rollback ownership became unclear 41 minutes after queue latency spiked, then leadership requested a single customer-impact owner two days later.",
+    "why": "Platform and application teams disagreed on who owned rollback settings while release management lacked a current runbook. That coordination gap delayed decision-making during the migration incident.",
+    "recommended_action": "Assign a single migration incident commander and publish explicit rollback ownership before the next deployment window.",
+    "evidence": [
+      {
+        "source": "slack_logs.jsonl",
+        "timestamp": "2026-05-01T10:33:00Z",
+        "quote": "Rollback owner unclear. Platform says app owns config. App says platform owns queue settings."
+      },
+      {
+        "source": "jira_tickets.csv",
+        "timestamp": "2026-05-03",
+        "quote": "NOVA-2201: Document rollback ownership for migration flags remained blocked."
+      },
+      {
+        "source": "incident_reports.md",
+        "timestamp": "2026-05-01",
+        "quote": "Rollback ownership was unclear between platform and application teams."
+      }
+    ]
+  },
+  {
+    "id": "customer-escalation-spike",
+    "risk_name": "Customer escalation spike",
+    "confidence": 0.92,
+    "severity": "critical",
+    "sources": ["support_tickets.csv", "slack_logs.jsonl", "incident_reports.md"],
+    "timeline_correlation": "Customer onboarding complaints appeared after the migration cutover, then escalated into SLA review, service credit, refund, and churn indicators within 72 hours.",
+    "why": "Support tickets show enterprise customers moving from technical complaints to commercial consequences. The operational issue is no longer contained inside engineering.",
+    "recommended_action": "Send proactive remediation timelines to affected enterprise customers and create a shared customer-impact room with support, platform, and release leads.",
+    "evidence": [
+      {
+        "source": "support_tickets.csv",
+        "timestamp": "2026-05-02",
+        "quote": "ArdentBank requested SLA review after repeated failed provisioning."
+      },
+      {
+        "source": "support_tickets.csv",
+        "timestamp": "2026-05-03",
+        "quote": "CedarWorks threatened churn if API instability continued this week."
+      },
+      {
+        "source": "slack_logs.jsonl",
+        "timestamp": "2026-05-02T14:12:00Z",
+        "quote": "Escalation volume is now 3x baseline."
+      }
+    ]
+  },
+  {
+    "id": "delivery-delay",
+    "risk_name": "Delivery delay",
+    "confidence": 0.88,
+    "severity": "high",
+    "sources": ["jira_tickets.csv", "slack_logs.jsonl"],
+    "timeline_correlation": "Critical defects reopened after the failed rollback, then QA certification and the May release train became blocked.",
+    "why": "Reopened bugs and blocked QA work indicate that the migration is now delaying planned delivery, not just creating transient incident noise.",
+    "recommended_action": "Freeze non-critical releases until queue behavior is validated under production-like load and QA has a certifiable hotfix candidate.",
+    "evidence": [
+      {
+        "source": "jira_tickets.csv",
+        "timestamp": "2026-05-02",
+        "quote": "NOVA-2281: Retry patch conflicts with migration flag under load was reopened."
+      },
+      {
+        "source": "jira_tickets.csv",
+        "timestamp": "2026-05-04",
+        "quote": "NOVA-2312: Resume May release train after migration stabilization remained blocked."
+      },
+      {
+        "source": "slack_logs.jsonl",
+        "timestamp": "2026-05-04T08:09:00Z",
+        "quote": "Release train slipped again. Three dependencies blocked and QA cannot certify."
+      }
+    ]
+  },
+  {
+    "id": "security-exposure",
+    "risk_name": "Security exposure",
+    "confidence": 0.97,
+    "severity": "critical",
+    "sources": ["slack_logs.jsonl", "security_events.json"],
+    "timeline_correlation": "A credential-like token was posted during incident response minutes after a failed rollback, then the governance layer blocked it before model processing.",
+    "why": "Incident pressure caused sensitive operational data to appear in ordinary collaboration channels. The AI boundary needs to block this before external analysis.",
+    "recommended_action": "Rotate the exposed credential, audit payment retry service access logs, and keep outbound model sanitization enforced for incident channels.",
+    "evidence": [
+      {
+        "source": "slack_logs.jsonl",
+        "timestamp": "2026-05-01T11:34:00Z",
+        "quote": "Temporary key is GSK_live_91f4...21 and expires tonight."
+      },
+      {
+        "source": "security_events.json",
+        "timestamp": "2026-05-01T11:34:02Z",
+        "quote": "Credential-like token removed before outbound AI processing."
+      },
+      {
+        "source": "slack_logs.jsonl",
+        "timestamp": "2026-05-01T11:35:00Z",
+        "quote": "Rotate that key immediately. Treat this as exposed."
+      }
+    ]
+  }
+]

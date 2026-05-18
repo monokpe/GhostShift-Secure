@@ -1,0 +1,58 @@
+[
+  {
+    "timestamp": "2026-04-28T09:12:00Z",
+    "category": "baseline",
+    "severity": "low",
+    "title": "Migration readiness green",
+    "description": "Platform reports no blockers, with observability still catching up."
+  },
+  {
+    "timestamp": "2026-05-01T09:52:00Z",
+    "category": "incident",
+    "severity": "critical",
+    "title": "Queue latency spike after cutover",
+    "description": "eu-west queues degrade after migration flag rollout."
+  },
+  {
+    "timestamp": "2026-05-01T10:33:00Z",
+    "category": "coordination",
+    "severity": "high",
+    "title": "Rollback ownership unclear",
+    "description": "Platform and application teams disagree on who owns migration rollback settings."
+  },
+  {
+    "timestamp": "2026-05-01T11:34:00Z",
+    "category": "security",
+    "severity": "critical",
+    "title": "Credential posted in incident room",
+    "description": "Temporary payment retry service key appears in Slack incident channel."
+  },
+  {
+    "timestamp": "2026-05-02T07:40:00Z",
+    "category": "customer",
+    "severity": "critical",
+    "title": "Enterprise onboarding SLA breach",
+    "description": "Three enterprise customers exceed onboarding SLA commitments."
+  },
+  {
+    "timestamp": "2026-05-02T16:48:00Z",
+    "category": "delivery",
+    "severity": "high",
+    "title": "Critical defect reopened",
+    "description": "Retry patch conflict resurfaces when migration flag is active."
+  },
+  {
+    "timestamp": "2026-05-03T09:22:00Z",
+    "category": "leadership",
+    "severity": "high",
+    "title": "COO requests single owner",
+    "description": "Leadership cannot determine whether customer impact is stabilizing."
+  },
+  {
+    "timestamp": "2026-05-04T08:09:00Z",
+    "category": "delivery",
+    "severity": "high",
+    "title": "Release train slips",
+    "description": "Three dependencies remain blocked and QA cannot certify release."
+  }
+]

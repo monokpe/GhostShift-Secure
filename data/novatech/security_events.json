@@ -1,0 +1,38 @@
+[
+  {
+    "id": "SEC-001",
+    "timestamp": "2026-05-01T11:34:02Z",
+    "source": "slack_logs.jsonl",
+    "channel": "#incident-war-room",
+    "finding_type": "api_key",
+    "severity": "critical",
+    "detected_value_preview": "GSK_live_91f4...21",
+    "action": "blocked_and_sanitized",
+    "sanitized_replacement": "[REDACTED_API_KEY]",
+    "governance_note": "Credential-like token removed before outbound AI processing."
+  },
+  {
+    "id": "SEC-002",
+    "timestamp": "2026-05-01T11:35:19Z",
+    "source": "slack_logs.jsonl",
+    "channel": "#incident-war-room",
+    "finding_type": "secret_handling_warning",
+    "severity": "high",
+    "detected_value_preview": "rotate that key",
+    "action": "logged",
+    "sanitized_replacement": null,
+    "governance_note": "Security engineer acknowledged exposed credential and requested rotation."
+  },
+  {
+    "id": "SEC-003",
+    "timestamp": "2026-05-02T14:12:22Z",
+    "source": "support_tickets.csv",
+    "channel": "support_export",
+    "finding_type": "customer_sensitive_context",
+    "severity": "medium",
+    "detected_value_preview": "enterprise account names",
+    "action": "tokenized",
+    "sanitized_replacement": "[CUSTOMER_ACCOUNT]",
+    "governance_note": "Customer account names tokenized for aggregate model analysis."
+  }
+]

@@ -1,0 +1,10 @@
+ticket_id,created_at,account,plan,severity,status,summary,sentiment,risk_signal
+SUP-8812,2026-04-27,ArdentBank,Enterprise,Low,Closed,"Question about migration maintenance window","neutral","baseline"
+SUP-8841,2026-05-01,BlueRidge Health,Enterprise,High,Escalated,"Onboarding users receive 502 errors during provisioning","negative","onboarding_failure"
+SUP-8848,2026-05-01,CedarWorks,Enterprise,High,Open,"API integrations timing out after cutover","negative","service_degradation"
+SUP-8850,2026-05-01,Northstar Retail,Business,Medium,Open,"Admin console says setup complete but users cannot log in","negative","customer_confusion"
+SUP-8864,2026-05-02,ArdentBank,Enterprise,Critical,Escalated,"Customer requests SLA review after repeated failed provisioning","angry","sla_risk"
+SUP-8871,2026-05-02,BlueRidge Health,Enterprise,Critical,Escalated,"CIO asks for incident explanation and remediation timeline","angry","executive_escalation"
+SUP-8879,2026-05-02,Kestrel Logistics,Business,High,Open,"Refund requested after onboarding delay exceeded 48 hours","angry","revenue_risk"
+SUP-8892,2026-05-03,CedarWorks,Enterprise,Critical,Escalated,"Customer threatens churn if API instability continues this week","angry","churn_risk"
+SUP-8903,2026-05-04,ArdentBank,Enterprise,Critical,Open,"Procurement requests service credit documentation","angry","financial_impact"

@@ -1,0 +1,117 @@
+{
+  "dataset": "NovaTech Systems migration drift scenario",
+  "version": "1.0.0",
+  "purpose": "Hackathon demo dataset for GhostShift Secure",
+  "analysis_window": {
+    "start": "2026-04-28",
+    "end": "2026-05-04"
+  },
+  "demo_arc": [
+    "Stable migration readiness",
+    "Infrastructure cutover",
+    "Deployment instability",
+    "Rollback ownership confusion",
+    "Credential leakage",
+    "Customer escalation spike",
+    "Executive risk summary"
+  ],
+  "files": [
+    {
+      "path": "slack_logs.jsonl",
+      "type": "jsonl",
+      "source": "Slack export",
+      "records": 15,
+      "primary_signals": [
+        "coordination_breakdown",
+        "deployment_instability",
+        "credential_leak"
+      ]
+    },
+    {
+      "path": "jira_tickets.csv",
+      "type": "csv",
+      "source": "Jira export",
+      "records": 12,
+      "primary_signals": [
+        "blocked_dependencies",
+        "reopened_bugs",
+        "delivery_delay"
+      ]
+    },
+    {
+      "path": "support_tickets.csv",
+      "type": "csv",
+      "source": "Support ticket export",
+      "records": 9,
+      "primary_signals": [
+        "sla_risk",
+        "refund_requests",
+        "churn_risk"
+      ]
+    },
+    {
+      "path": "incident_reports.md",
+      "type": "markdown",
+      "source": "Incident reports",
+      "records": 2,
+      "primary_signals": [
+        "service_degradation",
+        "rollback_failure",
+        "residual_risk"
+      ]
+    },
+    {
+      "path": "timeline_events.json",
+      "type": "json",
+      "source": "Normalized operational timeline",
+      "records": 8,
+      "primary_signals": [
+        "causal_sequence",
+        "event_correlation"
+      ]
+    },
+    {
+      "path": "security_events.json",
+      "type": "json",
+      "source": "Lobster Trap-style governance events",
+      "records": 3,
+      "primary_signals": [
+        "blocked_payload",
+        "sanitization",
+        "audit_log"
+      ]
+    },
+    {
+      "path": "executive_insights.json",
+      "type": "json",
+      "source": "Precomputed executive intelligence",
+      "records": 1,
+      "primary_signals": [
+        "risk_score",
+        "root_cause",
+        "recommended_actions"
+      ]
+    },
+    {
+      "path": "evidence.json",
+      "type": "json",
+      "source": "Risk evidence drilldowns",
+      "records": 4,
+      "primary_signals": [
+        "explainability",
+        "source_evidence",
+        "timeline_correlation"
+      ]
+    }
+  ],
+  "expected_dashboard_state": {
+    "before_ingestion": {
+      "risk_score": 42,
+      "risk_posture": "moderate"
+    },
+    "after_ingestion": {
+      "risk_score": 86,
+      "risk_posture": "critical"
+    }
+  }
+}

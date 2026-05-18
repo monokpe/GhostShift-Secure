@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostShift Secure — Project Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #131b2e;
+      --surface-border: #222f4d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #10b981;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
+    }
+
+    .hub-container {
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+      background: linear-gradient(135deg, var(--surface) 0%, #0d1323 100%);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 1.75rem;
+      font-weight: 800;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(120deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 480px) {
+      .actions-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .hub-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .hub-card:hover {
+      background: rgba(99, 102, 241, 0.05);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+    <div class="brand-logo">GS</div>
+    <h1>GhostShift Secure</h1>
+    <div class="tagline">Enterprise AI Governance & Drift Detection</div>
+    <p class="description">
+      A security-first operations intelligence dashboard that correlates fragmented coordinate signals while enforcing local privacy guardrails before external model boundaries.
+    </p>
+
+    <div class="actions-grid">
+      <!-- Portal Link 1: Slides -->
+      <a href="app/slides.html" class="hub-card">
+        <span class="card-icon">🖥️</span>
+        <span class="card-title">Launch Pitch Deck</span>
+        <span class="card-desc">Interactive, keyboard-controlled presentation slides with presenter notes.</span>
+      </a>
+
+      <!-- Portal Link 2: Dashboard -->
+      <a href="app/index.html" class="hub-card">
+        <span class="card-icon">📊</span>
+        <span class="card-title">Interactive Dashboard</span>
+        <span class="card-desc">Live operational risk dashboard with multi-source logging & evidence drilldowns.</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      GhostShift Secure — Hackathon Submission
+    </div>
+  </div>
+
+</body>
+</html>

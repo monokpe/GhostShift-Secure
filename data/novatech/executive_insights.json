@@ -1,0 +1,62 @@
+{
+  "organization": "NovaTech Systems",
+  "analysis_window": {
+    "start": "2026-04-28",
+    "end": "2026-05-04"
+  },
+  "risk_score": 86,
+  "confidence": 0.91,
+  "risk_posture": "critical",
+  "headline": "Infrastructure migration triggered coordination drift, customer escalation, and security exposure.",
+  "executive_summary": "NovaTech's infrastructure migration appears to have created a coordination breakdown between platform engineering, application teams, release management, and customer operations. The breakdown increased deployment instability, reopened critical defects, delayed the release train, and elevated enterprise customer escalation volume. A credential leak inside the incident response channel also introduced immediate AI governance risk, which GhostShift Secure blocked before outbound model processing.",
+  "root_cause": "The migration shifted ownership boundaries faster than NovaTech's operating model could absorb. Platform, application, release, and support teams each held partial context, but no single owner controlled rollback decisions, customer impact, and deployment stabilization.",
+  "what_changed": [
+    "Operational state moved from normal migration readiness to SEV-1 service degradation within one business day.",
+    "Customer signals shifted from isolated onboarding complaints to SLA, refund, service credit, and churn indicators.",
+    "Delivery signals shifted from planned release coordination to blocked QA certification and slipped release train.",
+    "Incident pressure created a security boundary event when a credential-like token appeared in Slack."
+  ],
+  "decision_brief": {
+    "primary_decision": "Treat the migration as an active business-risk incident, not only an engineering defect.",
+    "next_72_hours": "Centralize incident command, freeze non-critical deployments, rotate the exposed credential, and send proactive remediation timelines to affected enterprise customers.",
+    "owner_recommendation": "COO-owned customer-impact command with platform, application, release, support, and security leads."
+  },
+  "detected_risks": [
+    {
+      "name": "Coordination breakdown",
+      "severity": "critical",
+      "confidence": 0.94,
+      "evidence": "Rollback ownership was unclear and leadership requested a single customer-impact owner."
+    },
+    {
+      "name": "Delivery delay",
+      "severity": "high",
+      "confidence": 0.88,
+      "evidence": "Release train slipped with blocked QA certification and reopened migration defects."
+    },
+    {
+      "name": "Customer escalation spike",
+      "severity": "critical",
+      "confidence": 0.92,
+      "evidence": "Enterprise onboarding SLA breaches triggered refund, service credit, and churn-risk requests."
+    },
+    {
+      "name": "Security exposure",
+      "severity": "critical",
+      "confidence": 0.97,
+      "evidence": "Credential-like token was posted in an incident channel and sanitized before AI processing."
+    }
+  ],
+  "recommended_actions": [
+    "Assign a single migration incident commander for the next 72 hours.",
+    "Freeze non-critical deployments until rollback ownership is explicit.",
+    "Create a shared customer-impact room with platform, app, release, and support leads.",
+    "Rotate the exposed credential and audit payment retry service access logs.",
+    "Send proactive remediation timelines to affected enterprise customers."
+  ],
+  "business_impact": {
+    "customer_risk": "Three enterprise accounts show SLA, refund, or churn indicators.",
+    "delivery_risk": "May release train is delayed by unresolved migration dependencies.",
+    "security_risk": "Credential exposure was contained, but related access logs require review."
+  }
+}
