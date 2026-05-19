@@ -119,15 +119,48 @@
         </section>
 
         <section class="view" id="upload">
-          <section class="panel split">
+          <!-- Premium Configuration Zone -->
+          <section class="panel split" style="margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; align-items: start;">
             <div>
-              <span class="label">Secure Ingestion</span>
-              <h2>NovaTech Operational Export</h2>
-              <p class="muted">Slack logs, Jira tickets, support cases, incident reports, timeline events, and governance records are staged for secure analysis.</p>
+              <span class="label">Secure Ingestion & Governance</span>
+              <h2>Operational Risk Analysis</h2>
+              <p class="muted">Upload Slack logs, Jira tickets, support logs, and incident reports to perform real-time operational drift analysis.</p>
+              
+              <!-- Drag and drop upload zone -->
+              <div id="drop-zone" style="margin-top: 16px; border: 2px dashed var(--line); border-radius: 8px; padding: 24px; text-align: center; background: rgba(255, 255, 255, 0.01); cursor: pointer; transition: border-color 0.2s ease;">
+                <span class="label" style="color: var(--cyan); margin-bottom: 4px;">Drag & Drop Files Here</span>
+                <p style="font-size: 12px; color: var(--muted);">or click to browse operational files (.csv, .jsonl, .md)</p>
+                <input type="file" id="file-uploader" multiple style="display: none;" accept=".csv,.jsonl,.md" />
+              </div>
+              <div id="selected-files-list" style="margin-top: 10px; font-size: 12px; color: var(--green); min-height: 20px;"></div>
             </div>
-            <button class="primary-action" id="upload-analysis">Analyze Dataset</button>
+            
+            <div style="display: grid; gap: 14px; background: var(--surface); padding: 18px; border: 1px solid var(--line); border-radius: 8px;">
+              <div>
+                <span class="label" style="color: var(--cyan);">AI Engine Settings</span>
+                <strong>Gemini LLM Pipeline</strong>
+                <p class="muted" style="font-size: 11px; margin-top: 4px; margin-bottom: 10px;">GhostShift secure gateway uses dynamic DSPy modules + Gemini-1.5-Flash recursive briefings. Paste your key below to connect.</p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="password" id="gemini-key-input" placeholder="Paste your GEMINI_API_KEY..." style="flex: 1; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); font-size: 13px;" />
+                  <button class="secondary-action" id="save-key-btn" style="min-height: unset; padding: 0 16px; font-size: 13px;">Save Key</button>
+                </div>
+                <div id="key-status-msg" style="font-size: 11px; color: var(--muted); margin-top: 6px;"></div>
+              </div>
+              
+              <div style="border-top: 1px solid var(--line); padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>Analysis Action</strong>
+                  <p class="muted" style="font-size: 11px;">Analyze custom files or fallback to NovaTech dataset.</p>
+                </div>
+                <button class="primary-action" id="upload-analysis" style="min-width: 140px;">Analyze Dataset</button>
+              </div>
+            </div>
           </section>
+          
+          <span class="label">Staged Datasets</span>
           <section class="file-grid" id="file-grid"></section>
+          
+          <span class="label" style="margin-top: 12px;">Active Pipeline Progress</span>
           <section class="pipeline" id="pipeline"></section>
         </section>
 

@@ -13,6 +13,7 @@ This workspace contains a hackathon-ready demo with production-grade scaffolding
 
 **For judges and presenters:**
 
+- **[PRD.md](docs/PRD.md)** — Detailed Product Requirements Document & architecture specifications
 - **[PITCH_DECK.md](PITCH_DECK.md)** — Judge pitch deck (13 slides, convert to your preferred format)
 - **[DEMO_SCRIPT.md](DEMO_SCRIPT.md)** — Presenter narration for the five-scene demo
 - **[DEMO_RUNBOOK.md](DEMO_RUNBOOK.md)** — Step-by-step demo execution guide with troubleshooting

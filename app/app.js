@@ -253,18 +253,159 @@ async function loadApiData() {
   }
 }
 
-async function postDemoPayload() {
-  document.getElementById("original-payload").textContent = DEMO_LEAK;
+state.selectedFiles = [];
+
+function applyDynamicAnalysis(analysis) {
+  state.analyzed = true;
+  state.apiConnected = true;
+
+  // 1. Update dashboard metrics
+  state.after.score = analysis.risk_score;
+  state.after.posture = severityLabel(analysis.risk_posture);
+  state.after.summary = analysis.headline;
+
+  if (analysis.metrics) {
+    state.after.metrics = analysis.metrics;
+  }
+
+  // 2. Map signals
+  if (analysis.detected_risks) {
+    state.after.signals = analysis.detected_risks.map((risk) => [
+      risk.name,
+      risk.evidence,
+      severityLabel(risk.severity)
+    ]);
+  }
+
+  // 3. Map timeline
+  if (analysis.timeline) {
+    timeline = analysis.timeline.map((event) => [
+      formatTime(event.timestamp),
+      event.severity,
+      event.title,
+      event.description
+    ]);
+  }
+
+  // 4. Map recommendations
+  if (analysis.recommendations) {
+    recommendations = analysis.recommendations;
+  }
+
+  // 5. Map evidence
+  if (analysis.evidence) {
+    evidenceRecords = analysis.evidence;
+  }
+
+  // 6. Map audit events
+  if (analysis.security_events) {
+    auditEvents = analysis.security_events.map((event) => [
+      event.id || "LIVE-SEC",
+      event.governance_note || "Secrets blocked and sanitized.",
+      event.action || "blocked_and_sanitized"
+    ]);
+    document.querySelector("#governance .panel-header .status-pill").textContent = `${auditEvents.length} events`;
+  }
+
+  // 7. Map executive brief
+  if (analysis.executive_summary || analysis.headline) {
+    executiveBrief = {
+      confidence: analysis.confidence || 0.94,
+      headline: analysis.headline,
+      summary: analysis.executive_summary,
+      rootCause: analysis.root_cause || "Migration configuration boundary shift.",
+      whatChanged: analysis.what_changed || [],
+      decisionBrief: analysis.decision_brief || {
+        primary_decision: "Centralize migration boundaries.",
+        next_72_hours: "Freeze deployments and inspect retry logs.",
+        owner_recommendation: "Unified command."
+      },
+      detectedRisks: analysis.detected_risks || []
+    };
+  }
+}
+
+async function postCustomPayload() {
+  pipeline = [
+    ["Parse custom upload", `Staging ${state.selectedFiles.length} operational files for ingestion...`],
+    ["Run security filter", "Scanning files for API keys, email addresses, and passwords..."],
+    ["Recursive DSPy summarization", "Queued for deep multi-document contextual summarization..."],
+    ["Gemini executive intelligence", "Waiting for executive brief formulation..."],
+    ["Publish governance audit", "Audit trail generation pending..."]
+  ];
+  renderPipeline();
+
+  const formData = new FormData();
+  state.selectedFiles.forEach((file) => {
+    formData.append("files", file);
+  });
+
+  const headers = {};
+  const keyInput = document.getElementById("gemini-key-input");
+  const key = keyInput ? keyInput.value.trim() : localStorage.getItem("gemini_api_key");
+  if (key) {
+    headers["X-Gemini-API-Key"] = key;
+  }
+
   try {
     const response = await fetch(`${API_BASE}/api/ingest`, {
       method: "POST",
-      headers: { "Content-Type": "text/plain" },
+      headers: headers,
+      body: formData
+    });
+    if (!response.ok) throw new Error(`Analysis failed with status ${response.status}`);
+    const result = await response.json();
+
+    // Render preview
+    if (result.files && result.files.length > 0) {
+      document.getElementById("original-payload").textContent =
+        "CUSTOM INGESTION\nActive files:\n" + state.selectedFiles.map((f) => `- ${f.name}`).join("\n");
+      document.getElementById("sanitized-payload").textContent =
+        result.files[0].sanitized_preview || "Files successfully processed and scanned.";
+    }
+
+    if (result.analysis) {
+      applyDynamicAnalysis(result.analysis);
+    }
+
+    pipeline = [
+      ["Parse custom upload", `${result.files.length} custom file(s) ingested and mapped.`],
+      ["Run security filter", `${result.security_events.length} credential compliance items handled.`],
+      ["Recursive DSPy summarization", "Context parsed and summarized into dynamic operational vectors."],
+      ["Gemini executive intelligence", "Headline, root cause, and 72-hour decision briefing completed."],
+      ["Publish governance audit", "Audits logged to risk database and evidence drawer mapped."]
+    ];
+  } catch (error) {
+    console.error("Custom analysis failed:", error);
+    alert("Operational Analysis Error: " + error.message);
+  }
+}
+
+async function postDemoPayload() {
+  document.getElementById("original-payload").textContent = DEMO_LEAK;
+  
+  const headers = {};
+  const keyInput = document.getElementById("gemini-key-input");
+  const key = keyInput ? keyInput.value.trim() : localStorage.getItem("gemini_api_key");
+  if (key) {
+    headers["X-Gemini-API-Key"] = key;
+  }
+  
+  try {
+    const response = await fetch(`${API_BASE}/api/ingest`, {
+      method: "POST",
+      headers: headers,
       body: DEMO_LEAK
     });
     if (!response.ok) throw new Error(`ingest returned ${response.status}`);
     const result = await response.json();
     const sanitized = result.files[0]?.sanitized_preview || "Payload sanitized.";
     document.getElementById("sanitized-payload").textContent = sanitized;
+
+    if (result.analysis) {
+      applyDynamicAnalysis(result.analysis);
+    }
+
     pipeline = [
       ["Parse uploaded payload", `${result.files.length} source payload accepted by ingestion API.`],
       ["Run security filter", `${result.security_events.length} sensitive finding intercepted before AI processing.`],
@@ -507,7 +648,11 @@ function renderAll() {
 
 async function runAnalysis(keepView = false) {
   state.analyzed = true;
-  await postDemoPayload();
+  if (state.selectedFiles && state.selectedFiles.length > 0) {
+    await postCustomPayload();
+  } else {
+    await postDemoPayload();
+  }
   renderAll();
   if (!keepView) selectView("dashboard");
 }
@@ -523,6 +668,85 @@ async function showPitchScene(index) {
   }
   renderPitch();
   selectView(scene.view);
+}
+
+function initUploader() {
+  const dropZone = document.getElementById("drop-zone");
+  const fileInput = document.getElementById("file-uploader");
+  const listContainer = document.getElementById("selected-files-list");
+  const keyInput = document.getElementById("gemini-key-input");
+  const saveKeyBtn = document.getElementById("save-key-btn");
+  const statusMsg = document.getElementById("key-status-msg");
+  
+  if (!dropZone || !fileInput) return;
+  
+  // 1. Drag & Drop events
+  dropZone.addEventListener("click", () => fileInput.click());
+  
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = "var(--cyan)";
+    dropZone.style.background = "rgba(107, 187, 216, 0.05)";
+  });
+  
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.style.borderColor = "var(--line)";
+    dropZone.style.background = "rgba(255, 255, 255, 0.01)";
+  });
+  
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = "var(--line)";
+    dropZone.style.background = "rgba(255, 255, 255, 0.01)";
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleSelectedFiles(e.dataTransfer.files);
+    }
+  });
+  
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleSelectedFiles(e.target.files);
+    }
+  });
+  
+  function handleSelectedFiles(fileList) {
+    state.selectedFiles = Array.from(fileList);
+    listContainer.textContent = `${state.selectedFiles.length} file(s) selected: ` + state.selectedFiles.map(f => f.name).join(", ");
+    
+    // Dynamically update staged list
+    files = state.selectedFiles.map(f => {
+      const sizeKB = (f.size / 1024).toFixed(1);
+      return [
+        f.name,
+        "User Export",
+        `${sizeKB} KB`,
+        "Ingestion & Compliance pending..."
+      ];
+    });
+    renderFiles();
+  }
+  
+  // 2. API Key storage events
+  const savedKey = localStorage.getItem("gemini_api_key");
+  if (savedKey) {
+    keyInput.value = savedKey;
+    statusMsg.textContent = "API Key loaded (configured locally).";
+    statusMsg.style.color = "var(--green)";
+  }
+  
+  saveKeyBtn.addEventListener("click", () => {
+    const key = keyInput.value.trim();
+    if (key) {
+      localStorage.setItem("gemini_api_key", key);
+      statusMsg.textContent = "API Key saved locally!";
+      statusMsg.style.color = "var(--green)";
+    } else {
+      localStorage.removeItem("gemini_api_key");
+      statusMsg.textContent = "API Key cleared. High-fidelity heuristics will be used.";
+      statusMsg.style.color = "var(--amber)";
+    }
+  });
 }
 
 document.querySelectorAll(".nav-item").forEach((button) => {
@@ -542,3 +766,4 @@ document.getElementById("next-scene").addEventListener("click", () => {
 });
 
 loadApiData();
+initUploader();
